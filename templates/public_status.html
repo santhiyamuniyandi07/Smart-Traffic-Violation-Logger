@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow p-4">
+
+    <h2 class="text-center">
+        🚦 Traffic Violation Status
+    </h2>
+
+    <hr>
+
+    <p>
+        <strong>Vehicle Number:</strong>
+        {{ violation.vehicle_number }}
+    </p>
+
+    <p>
+        <strong>Violation:</strong>
+        {{ violation.violation_type }}
+    </p>
+
+    <p>
+        <strong>Location:</strong>
+        {{ violation.location }}
+    </p>
+
+    <p>
+        <strong>Date:</strong>
+        {{ violation.date }}
+    </p>
+
+    <p>
+        <strong>Fine Amount:</strong>
+        ₹{{ violation.fine_amount }}
+    </p>
+
+    <p>
+        <strong>Payment Status:</strong>
+
+        {% if violation.status == "Paid" %}
+
+        <span class="badge bg-success">
+            PAID
+        </span>
+
+        {% else %}
+
+        <span class="badge bg-danger">
+            UNPAID
+        </span>
+
+        {% endif %}
+
+    </p>
+
+</div>
+
+{% endblock %}

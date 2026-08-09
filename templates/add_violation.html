@@ -1,0 +1,864 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ================================================= -->
+<!-- PAGE TITLE -->
+<!-- ================================================= -->
+
+<div class="text-center mb-4">
+
+    <h1 class="fw-bold">
+        🚦 Add Traffic Violation
+    </h1>
+
+    <p class="text-muted">
+        Enter violation details and payment information
+    </p>
+
+</div>
+
+
+{% if saved %}
+
+<!-- ================================================= -->
+<!-- SUCCESS SECTION -->
+<!-- ================================================= -->
+
+<div class="card shadow mx-auto"
+     style="max-width: 900px;">
+
+    <div class="card-body p-4">
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div class="text-center mb-4">
+
+            <h2 class="text-success fw-bold">
+                ✓ Violation Saved Successfully!
+            </h2>
+
+            <div class="alert alert-success mt-3">
+
+                Violation ID:
+                <strong>#{{ violation.id }}</strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- VIOLATION DETAILS -->
+        <!-- ================================================= -->
+
+        <h4 class="border-bottom pb-2 mb-4">
+            📋 Violation Details
+        </h4>
+
+
+        <div class="row">
+
+            <!-- VEHICLE NUMBER -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Vehicle Number
+                </label>
+
+                <div class="form-control bg-light">
+                    {{ violation.vehicle_number }}
+                </div>
+
+            </div>
+
+
+            <!-- VIOLATION TYPE -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Violation Type
+                </label>
+
+                <div class="form-control bg-light">
+                    {{ violation.violation_type }}
+                </div>
+
+            </div>
+
+
+            <!-- LOCATION -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Location
+                </label>
+
+                <div class="form-control bg-light">
+                    {{ violation.location }}
+                </div>
+
+            </div>
+
+
+            <!-- DATE -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Date
+                </label>
+
+                <div class="form-control bg-light">
+                    {{ violation.date }}
+                </div>
+
+            </div>
+
+
+            <!-- FINE AMOUNT -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Fine Amount
+                </label>
+
+                <div class="form-control bg-light fw-bold text-danger">
+
+                    ₹{{ "%.2f"|format(violation.fine_amount) }}
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT METHOD -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Payment Method
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {% if violation.payment_method == "Paid On Spot" %}
+
+                        <span class="text-success fw-bold">
+                            🟢 Paid On Spot
+                        </span>
+
+                    {% elif violation.payment_method == "UPI" %}
+
+                        <span class="text-primary fw-bold">
+                            🔵 UPI
+                        </span>
+
+                    {% elif violation.payment_method == "Unpaid" %}
+
+                        <span class="text-warning fw-bold">
+                            🟠 Unpaid
+                        </span>
+
+                    {% else %}
+
+                        {{ violation.payment_method }}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT STATUS -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Payment Status
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {% if violation.status == "Paid" %}
+
+                        <span class="badge bg-success">
+                            ✓ PAID
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-danger">
+                            UNPAID
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT TIME -->
+
+            <div class="col-md-6 mb-3">
+
+                <label class="fw-bold">
+                    Payment Time
+                </label>
+
+                <div class="form-control bg-light">
+
+                    {% if violation.payment_time %}
+
+                        {{ violation.payment_time.strftime(
+                            "%d-%m-%Y %I:%M %p"
+                        ) }}
+
+                    {% else %}
+
+                        <span class="text-danger">
+                            Not Paid Yet
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- PAYMENT SECTION -->
+        <!-- ================================================= -->
+
+        <hr class="my-4">
+
+        <h4 class="text-center mb-4">
+            💳 Payment
+        </h4>
+
+
+        {% if violation.status == "Paid" %}
+
+        <!-- ================================================= -->
+        <!-- PAID -->
+        <!-- ================================================= -->
+
+        <div class="alert alert-success text-center">
+
+            <h4 class="fw-bold">
+                ✓ Payment Completed
+            </h4>
+
+            <p class="mb-0">
+                This fine has already been paid.
+            </p>
+
+        </div>
+
+
+        {% else %}
+
+
+            {% if violation.payment_method == "UPI" %}
+
+            <!-- ================================================= -->
+            <!-- UPI PAYMENT -->
+            <!-- ================================================= -->
+
+            <div class="card border-primary mb-4">
+
+                <div class="card-body text-center">
+
+                    <h4 class="text-primary fw-bold">
+                        📱 Pay Fine using UPI
+                    </h4>
+
+                    <p class="text-muted">
+                        Scan this QR code using
+                        Google Pay, PhonePe or Paytm.
+                    </p>
+
+
+                    {% if payment_qr_url %}
+
+                        <div class="mb-3">
+
+                            <img
+                                src="{{ payment_qr_url }}"
+                                alt="UPI Payment QR Code"
+                                width="250"
+                                height="250"
+                                class="border rounded p-2 bg-white">
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="alert alert-warning">
+                            Payment QR Code is not available.
+                        </div>
+
+                    {% endif %}
+
+
+                    <h2 class="fw-bold text-danger">
+
+                        ₹{{ "%.2f"|format(violation.fine_amount) }}
+
+                    </h2>
+
+                    <p class="text-muted">
+                        Fine Amount
+                    </p>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'mark_paid',
+                            id=violation.id
+                        ) }}"
+                        class="mt-3">
+
+                        <button
+                            type="submit"
+                            class="btn btn-success btn-lg">
+
+                            ✓ Payment Received / Mark Paid
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            {% elif violation.payment_method == "Unpaid" %}
+
+            <!-- ================================================= -->
+            <!-- UNPAID -->
+            <!-- ================================================= -->
+
+            <div class="card border-warning mb-4">
+
+                <div class="card-body text-center">
+
+                    <h4 class="text-warning fw-bold">
+                        🟠 Payment Pending
+                    </h4>
+
+                    <p class="text-muted">
+                        This violation has not been paid yet.
+                    </p>
+
+                    <h2 class="fw-bold text-danger">
+                        ₹{{ "%.2f"|format(violation.fine_amount) }}
+                    </h2>
+
+                    <p class="text-muted">
+                        Outstanding Fine Amount
+                    </p>
+
+
+                    <div class="alert alert-warning">
+
+                        ⚠️ Payment is still pending.
+                        The fine can be paid later.
+
+                    </div>
+
+
+                    <!-- PAY NOW BUTTON -->
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'mark_paid',
+                            id=violation.id
+                        ) }}"
+                        class="mt-3">
+
+                        <button
+                            type="submit"
+                            class="btn btn-success btn-lg">
+
+                            💳 Mark Payment as Received
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- ================================================= -->
+        <!-- VIOLATION STATUS QR -->
+        <!-- ================================================= -->
+
+        <hr class="my-4">
+
+
+        <div class="text-center">
+
+            <h4 class="fw-bold">
+                🔳 Violation Status QR
+            </h4>
+
+            <p class="text-muted">
+
+                Scan this QR code to view
+                violation details and payment status.
+
+            </p>
+
+
+            {% if violation_qr_url %}
+
+                <div class="mb-3">
+
+                    <img
+                        src="{{ violation_qr_url }}"
+                        alt="Violation Status QR Code"
+                        width="220"
+                        height="220"
+                        class="border rounded p-2 bg-white">
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-warning">
+
+                    Violation QR Code is not available.
+
+                </div>
+
+            {% endif %}
+
+
+            <p class="text-muted">
+                Status QR Code
+            </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- BUTTONS -->
+        <!-- ================================================= -->
+
+        <div class="d-flex
+                    justify-content-center
+                    gap-2
+                    flex-wrap
+                    mt-4">
+
+
+            <a
+                href="{{ status_url }}"
+                target="_blank"
+                class="btn btn-primary">
+
+                🔗 Open Status Page
+
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="btn btn-secondary">
+
+                📋 History
+
+            </a>
+
+
+            <a
+                href="{{ url_for('add_violation') }}"
+                class="btn btn-success">
+
+                ➕ Add Another Violation
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+
+<!-- ================================================= -->
+<!-- ADD VIOLATION FORM -->
+<!-- ================================================= -->
+
+<div class="card shadow mx-auto"
+     style="max-width: 850px;">
+
+    <div class="card-body p-4">
+
+        <form
+            method="POST"
+            action="{{ url_for('add_violation') }}">
+
+
+            <!-- ================================================= -->
+            <!-- VEHICLE NUMBER -->
+            <!-- ================================================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Vehicle Number
+                </label>
+
+                <input
+                    type="text"
+                    name="vehicle_number"
+                    class="form-control"
+                    placeholder="Example: TN57AB1234"
+                    required>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- VIOLATION TYPE -->
+            <!-- ================================================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Violation Type
+                </label>
+
+                <select
+                    name="violation_type"
+                    class="form-select"
+                    required>
+
+                    <option value="">
+                        Select Violation
+                    </option>
+
+                    <option value="No Helmet">
+                        🪖 No Helmet
+                    </option>
+
+                    <option value="Overspeeding">
+                        🚗 Overspeeding
+                    </option>
+
+                    <option value="Signal Violation">
+                        🚦 Signal Violation
+                    </option>
+
+                    <option value="No Seat Belt">
+                        🪢 No Seat Belt
+                    </option>
+
+                    <option value="Drunk Driving">
+                        🍺 Drunk Driving
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- LOCATION -->
+            <!-- ================================================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    name="location"
+                    class="form-control"
+                    placeholder="Example: Dindigul"
+                    required>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- DATE -->
+            <!-- ================================================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    name="date"
+                    class="form-control"
+                    required>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FINE AMOUNT -->
+            <!-- ================================================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Fine Amount
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+                        ₹
+                    </span>
+
+                    <input
+                        type="number"
+                        name="fine_amount"
+                        class="form-control"
+                        placeholder="Example: 500"
+                        min="0"
+                        step="0.01"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- PAYMENT METHOD -->
+            <!-- ================================================= -->
+
+            <div class="mb-4">
+
+                <label class="form-label fw-bold">
+                    Payment Method
+                </label>
+
+
+                <select
+                    name="payment_method"
+                    class="form-select"
+                    required
+                    id="paymentMethod">
+
+
+                    <option value="">
+                        Select Payment Method
+                    </option>
+
+
+                    <!-- PAID ON SPOT -->
+
+                    <option value="Paid On Spot">
+
+                        🟢 Paid On Spot
+
+                    </option>
+
+
+                    <!-- UPI -->
+
+                    <option value="UPI">
+
+                        🔵 Pay via UPI QR
+
+                    </option>
+
+
+                    <!-- UNPAID -->
+
+                    <option value="Unpaid">
+
+                        🟠 Unpaid / Pay Later
+
+                    </option>
+
+
+                </select>
+
+
+                <!-- ================================================= -->
+                <!-- PAYMENT INFORMATION -->
+                <!-- ================================================= -->
+
+                <div class="mt-3">
+
+
+                    <!-- SPOT -->
+
+                    <div
+                        id="spotInfo"
+                        class="alert alert-success"
+                        style="display:none;">
+
+                        🟢 <strong>Paid On Spot</strong>
+
+                        <br>
+
+                        The person has already paid
+                        the traffic fine.
+
+                    </div>
+
+
+                    <!-- UPI -->
+
+                    <div
+                        id="upiInfo"
+                        class="alert alert-primary"
+                        style="display:none;">
+
+                        🔵 <strong>UPI Payment</strong>
+
+                        <br>
+
+                        A QR code will be generated
+                        for Google Pay, PhonePe or Paytm.
+
+                    </div>
+
+
+                    <!-- UNPAID -->
+
+                    <div
+                        id="unpaidInfo"
+                        class="alert alert-warning"
+                        style="display:none;">
+
+                        🟠 <strong>Unpaid / Pay Later</strong>
+
+                        <br>
+
+                        The violation will be saved
+                        without payment.
+
+                        <br>
+
+                        Payment can be completed later.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SAVE BUTTON -->
+            <!-- ================================================= -->
+
+            <div class="d-grid">
+
+                <button
+                    type="submit"
+                    class="btn btn-success btn-lg">
+
+                    ✓ Save Violation
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- PAYMENT METHOD JAVASCRIPT -->
+<!-- ================================================= -->
+
+<script>
+
+const paymentMethod =
+    document.getElementById("paymentMethod");
+
+const spotInfo =
+    document.getElementById("spotInfo");
+
+const upiInfo =
+    document.getElementById("upiInfo");
+
+const unpaidInfo =
+    document.getElementById("unpaidInfo");
+
+
+paymentMethod.addEventListener("change", function () {
+
+    // Hide all messages
+
+    spotInfo.style.display = "none";
+
+    upiInfo.style.display = "none";
+
+    unpaidInfo.style.display = "none";
+
+
+    // Paid On Spot
+
+    if (this.value === "Paid On Spot") {
+
+        spotInfo.style.display = "block";
+
+    }
+
+
+    // UPI
+
+    else if (this.value === "UPI") {
+
+        upiInfo.style.display = "block";
+
+    }
+
+
+    // Unpaid
+
+    else if (this.value === "Unpaid") {
+
+        unpaidInfo.style.display = "block";
+
+    }
+
+});
+
+</script>
+
+
+{% endif %}
+
+{% endblock %}

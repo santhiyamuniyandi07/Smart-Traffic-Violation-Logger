@@ -1,0 +1,630 @@
+/* ==========================================
+   GLOBAL
+========================================== */
+
+body {
+
+    background: #f4f7fb;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: #212529;
+
+    margin: 0;
+}
+
+
+/* ==========================================
+   NAVBAR
+========================================== */
+
+.navbar {
+
+    min-height: 70px;
+
+    background: linear-gradient(
+        90deg,
+        #111827,
+        #1f2937
+    ) !important;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.20);
+}
+
+
+.navbar-brand {
+
+    font-size: 23px;
+
+    color: white !important;
+}
+
+
+/* ==========================================
+   NAVIGATION BUTTONS
+========================================== */
+
+.nav-btn {
+
+    text-decoration: none;
+
+    padding: 10px 20px;
+
+    border-radius: 7px;
+
+    font-weight: 600;
+
+    display: inline-block;
+
+    transition: 0.3s;
+
+    color: white !important;
+}
+
+
+.home-btn {
+
+    background-color: #0d6efd;
+}
+
+
+.home-btn:hover {
+
+    background-color: #0b5ed7;
+
+    transform: translateY(-2px);
+}
+
+
+.add-btn {
+
+    background-color: #198754;
+}
+
+
+.add-btn:hover {
+
+    background-color: #157347;
+
+    transform: translateY(-2px);
+}
+
+
+.history-btn {
+
+    background-color: #ffc107;
+
+    color: #212529 !important;
+}
+
+
+.history-btn:hover {
+
+    background-color: #ffca2c;
+
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================
+   MAIN
+========================================== */
+
+main {
+
+    min-height: calc(100vh - 140px);
+
+    padding-bottom: 40px;
+}
+
+
+/* ==========================================
+   HOME PAGE TITLE
+========================================== */
+
+.dashboard-title {
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    margin-top: 40px;
+
+    margin-bottom: 8px;
+
+    color: #111827;
+}
+
+
+.dashboard-subtitle {
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 18px;
+
+    margin-bottom: 40px;
+}
+
+
+/* ==========================================
+   STAT CARDS
+========================================== */
+
+.stat-card {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.10);
+
+    height: 100%;
+
+    transition: 0.3s;
+
+    border-top: 5px solid #0d6efd;
+}
+
+
+.stat-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.15);
+}
+
+
+.stat-card h5 {
+
+    color: #475569;
+
+    font-size: 20px;
+
+    margin-bottom: 12px;
+}
+
+
+.stat-number {
+
+    font-size: 40px;
+
+    font-weight: 700;
+}
+
+
+.total-number {
+
+    color: #0d6efd;
+}
+
+
+.paid-number {
+
+    color: #198754;
+}
+
+
+.unpaid-number {
+
+    color: #dc3545;
+}
+
+
+.fine-number {
+
+    color: #f59e0b;
+}
+
+
+/* ==========================================
+   ACTION CARDS
+========================================== */
+
+.action-card {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.10);
+
+    height: 100%;
+
+    transition: 0.3s;
+
+    text-decoration: none;
+
+    color: #212529;
+
+    display: block;
+}
+
+
+.action-card:hover {
+
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,0.15);
+
+    color: #212529;
+}
+
+
+.action-icon {
+
+    font-size: 48px;
+
+    margin-bottom: 12px;
+}
+
+
+.action-card h3 {
+
+    font-weight: 700;
+
+    margin-bottom: 10px;
+}
+
+
+.action-card p {
+
+    color: #64748b;
+
+    font-size: 16px;
+}
+
+
+/* ==========================================
+   RECENT VIOLATIONS
+========================================== */
+
+.recent-card {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.10);
+
+    margin-top: 35px;
+}
+
+
+.recent-card h2 {
+
+    font-weight: 700;
+
+    color: #1e293b;
+
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table {
+
+    margin-bottom: 0;
+}
+
+
+.table thead th {
+
+    background: #1f2937 !important;
+
+    color: white !important;
+
+    padding: 14px;
+
+    border: none;
+}
+
+
+.table tbody td {
+
+    padding: 14px;
+
+    vertical-align: middle;
+}
+
+
+/* ==========================================
+   ADD VIOLATION PAGE
+========================================== */
+
+.page-title {
+
+    text-align: center;
+
+    font-size: 40px;
+
+    font-weight: 700;
+
+    margin-top: 35px;
+
+    color: #111827;
+}
+
+
+.page-subtitle {
+
+    text-align: center;
+
+    color: #64748b;
+
+    margin-bottom: 30px;
+}
+
+
+.form-card {
+
+    max-width: 850px;
+
+    margin: 0 auto;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.10);
+}
+
+
+.form-label {
+
+    font-weight: 600;
+
+    color: #1e293b;
+}
+
+
+.form-control,
+.form-select {
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    border: 1px solid #cbd5e1;
+}
+
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: #0d6efd;
+
+    box-shadow:
+        0 0 0 3px rgba(13,110,253,0.15);
+}
+
+
+/* ==========================================
+   SAVE BUTTON
+========================================== */
+
+.save-button {
+
+    background-color: #198754 !important;
+
+    border: none;
+
+    padding: 13px;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    border-radius: 8px;
+
+    color: white;
+}
+
+
+.save-button:hover {
+
+    background-color: #157347 !important;
+}
+
+
+/* ==========================================
+   QR CODE
+========================================== */
+
+.qr-container {
+
+    text-align: center;
+
+    padding: 20px;
+}
+
+
+.qr-container img {
+
+    width: 220px;
+
+    height: 220px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 8px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.10);
+}
+
+
+/* ==========================================
+   HISTORY PAGE
+========================================== */
+
+.history-title {
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+    margin-top: 35px;
+
+    margin-bottom: 20px;
+
+    color: #111827;
+}
+
+
+.history-table {
+
+    background: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.10);
+}
+
+
+.history-table th {
+
+    background-color: #1f2937;
+
+    color: white;
+
+    padding: 14px;
+}
+
+
+.history-table td {
+
+    padding: 14px;
+
+    vertical-align: middle;
+}
+
+
+/* ==========================================
+   STATUS BADGES
+========================================== */
+
+.status-paid {
+
+    background-color: #198754;
+
+    color: white;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.status-unpaid {
+
+    background-color: #dc3545;
+
+    color: white;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.footer {
+
+    text-align: center;
+
+    padding: 25px;
+
+    margin-top: 40px;
+
+    background-color: #111827;
+
+    color: white;
+}
+
+
+.footer p {
+
+    margin: 0;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .dashboard-title {
+
+        font-size: 32px;
+    }
+
+    .page-title {
+
+        font-size: 32px;
+    }
+
+    .navbar .container {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        padding: 12px;
+    }
+
+    .nav-btn {
+
+        padding: 8px 12px;
+
+        font-size: 14px;
+    }
+
+}
