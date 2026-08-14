@@ -4,308 +4,429 @@
 
 <div class="container mt-4">
 
-    <h1 class="mb-4">
-        Violation History
-    </h1>
+    <!-- ============================= -->
+    <!-- PAGE TITLE -->
+    <!-- ============================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1 class="fw-bold">
+            📋 Violation History
+        </h1>
+
+        <a
+            href="{{ url_for('add_violation') }}"
+            class="btn btn-success"
+        >
+            ➕ Add Violation
+        </a>
+
+    </div>
 
 
     <!-- ============================= -->
-    <!-- Search Form -->
+    <!-- SEARCH FORM -->
     <!-- ============================= -->
 
-    <form method="GET" action="{{ url_for('history') }}">
+    <div class="card shadow-sm mb-4">
 
-        <div class="row g-2 mb-4">
+        <div class="card-body">
 
-            <!-- Vehicle Number -->
+            <form
+                method="GET"
+                action="{{ url_for('history') }}"
+            >
 
-            <div class="col-md-4">
+                <div class="row g-2">
 
-                <input
-                    type="text"
-                    name="vehicle"
-                    class="form-control"
-                    placeholder="Vehicle Number"
-                    value="{{ request.args.get('vehicle', '') }}"
-                >
+                    <!-- Vehicle Number -->
+
+                    <div class="col-md-4">
+
+                        <input
+                            type="text"
+                            name="vehicle"
+                            class="form-control"
+                            placeholder="🔍 Vehicle Number"
+                            value="{{ request.args.get('vehicle', '') }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="col-md-3">
+
+                        <select
+                            name="status"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                All Status
+                            </option>
+
+                            <option
+                                value="Paid"
+                                {% if request.args.get('status') == 'Paid' %}
+                                    selected
+                                {% endif %}
+                            >
+                                ✓ Paid
+                            </option>
+
+                            <option
+                                value="Unpaid"
+                                {% if request.args.get('status') == 'Unpaid' %}
+                                    selected
+                                {% endif %}
+                            >
+                                ⚠ Unpaid
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Violation Type -->
+
+                    <div class="col-md-3">
+
+                        <select
+                            name="type"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                All Violations
+                            </option>
+
+                            <option
+                                value="No Helmet"
+                                {% if request.args.get('type') == 'No Helmet' %}
+                                    selected
+                                {% endif %}
+                            >
+                                🪖 No Helmet
+                            </option>
+
+                            <option
+                                value="Overspeeding"
+                                {% if request.args.get('type') == 'Overspeeding' %}
+                                    selected
+                                {% endif %}
+                            >
+                                🚗 Overspeeding
+                            </option>
+
+                            <option
+                                value="Signal Violation"
+                                {% if request.args.get('type') == 'Signal Violation' %}
+                                    selected
+                                {% endif %}
+                            >
+                                🚦 Signal Violation
+                            </option>
+
+                            <option
+                                value="No Seat Belt"
+                                {% if request.args.get('type') == 'No Seat Belt' %}
+                                    selected
+                                {% endif %}
+                            >
+                                🪢 No Seat Belt
+                            </option>
+
+                            <option
+                                value="Drunk Driving"
+                                {% if request.args.get('type') == 'Drunk Driving' %}
+                                    selected
+                                {% endif %}
+                            >
+                                🍺 Drunk Driving
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Search Button -->
+
+                    <div class="col-md-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100"
+                        >
+                            🔍 Search
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- VIOLATION TABLE -->
+    <!-- ============================= -->
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="fw-bold mb-0">
+                    🚨 All Violations
+                </h4>
+
+                <span class="badge bg-primary">
+                    {{ violations|length }} Records
+                </span>
 
             </div>
 
 
-            <!-- Status -->
+            <div class="table-responsive">
 
-            <div class="col-md-3">
+                <table class="table table-bordered table-striped table-hover align-middle">
 
-                <select
-                    name="status"
-                    class="form-select"
-                >
+                    <!-- TABLE HEADER -->
 
-                    <option value="">
-                        All Status
-                    </option>
+                    <thead class="table-dark">
 
-                    <option
-                        value="Paid"
-                        {% if request.args.get('status') == 'Paid' %}
-                        selected
-                        {% endif %}
-                    >
-                        Paid
-                    </option>
+                        <tr>
 
-                    <option
-                        value="Unpaid"
-                        {% if request.args.get('status') == 'Unpaid' %}
-                        selected
-                        {% endif %}
-                    >
-                        Unpaid
-                    </option>
+                            <th>
+                                ID
+                            </th>
 
-                </select>
+                            <th>
+                                Vehicle
+                            </th>
 
-            </div>
+                            <th>
+                                Violation
+                            </th>
 
+                            <th>
+                                Location
+                            </th>
 
-            <!-- Violation Type -->
+                            <th>
+                                Date
+                            </th>
 
-            <div class="col-md-3">
+                            <th>
+                                Fine
+                            </th>
 
-                <select
-                    name="type"
-                    class="form-select"
-                >
+                            <th>
+                                Status
+                            </th>
 
-                    <option value="">
-                        All Violations
-                    </option>
+                            <th>
+                                QR Code
+                            </th>
 
-                    <option
-                        value="No Helmet"
-                        {% if request.args.get('type') == 'No Helmet' %}
-                        selected
-                        {% endif %}
-                    >
-                        No Helmet
-                    </option>
+                            <th>
+                                Action
+                            </th>
 
-                    <option
-                        value="Overspeeding"
-                        {% if request.args.get('type') == 'Overspeeding' %}
-                        selected
-                        {% endif %}
-                    >
-                        Overspeeding
-                    </option>
+                        </tr>
 
-                    <option
-                        value="Signal Violation"
-                        {% if request.args.get('type') == 'Signal Violation' %}
-                        selected
-                        {% endif %}
-                    >
-                        Signal Violation
-                    </option>
-
-                    <option
-                        value="No Seat Belt"
-                        {% if request.args.get('type') == 'No Seat Belt' %}
-                        selected
-                        {% endif %}
-                    >
-                        No Seat Belt
-                    </option>
-
-                    <option
-                        value="Drunk Driving"
-                        {% if request.args.get('type') == 'Drunk Driving' %}
-                        selected
-                        {% endif %}
-                    >
-                        Drunk Driving
-                    </option>
-
-                </select>
-
-            </div>
+                    </thead>
 
 
-            <!-- Search Button -->
+                    <!-- TABLE BODY -->
 
-            <div class="col-md-2">
+                    <tbody>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary w-100"
-                >
-                    Search
-                </button>
+                        {% for v in violations %}
+
+                        <tr>
+
+                            <!-- ID -->
+
+                            <td class="fw-bold">
+                                #{{ v.id }}
+                            </td>
+
+
+                            <!-- VEHICLE -->
+
+                            <td class="fw-bold">
+                                {{ v.vehicle_number }}
+                            </td>
+
+
+                            <!-- VIOLATION -->
+
+                            <td>
+                                {{ v.violation_type }}
+                            </td>
+
+
+                            <!-- LOCATION -->
+
+                            <td>
+                                {{ v.location }}
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+                                {{ v.date }}
+                            </td>
+
+
+                            <!-- FINE -->
+
+                            <td class="fw-bold text-danger">
+
+                                ₹{{ "%.2f"|format(v.fine_amount) }}
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                {% if v.status == "Paid" %}
+
+                                    <span class="badge bg-success">
+                                        ✓ PAID
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger">
+                                        ⚠ UNPAID
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- QR CODE -->
+
+                            <td class="text-center">
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='qr_codes/violation_' ~ v.id ~ '.png'
+                                    ) }}"
+                                    alt="Violation QR Code"
+                                    width="80"
+                                    height="80"
+                                    class="border rounded p-1 bg-white"
+                                >
+
+                            </td>
+
+
+                            <!-- DELETE -->
+
+                            <td class="text-center">
+
+                                <form
+                                    action="{{ url_for(
+                                        'delete_violation',
+                                        id=v.id
+                                    ) }}"
+                                    method="POST"
+                                    onsubmit="return confirm(
+                                        'Are you sure you want to delete this violation?'
+                                    );"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-danger btn-sm"
+                                    >
+                                        🗑️ Delete
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <!-- NO DATA -->
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="text-center py-5"
+                            >
+
+                                <h4 class="text-muted">
+                                    🚦 No violations found
+                                </h4>
+
+                                <p class="text-muted">
+                                    No traffic violation records
+                                    match your search.
+                                </p>
+
+                                <a
+                                    href="{{ url_for('add_violation') }}"
+                                    class="btn btn-success"
+                                >
+                                    ➕ Add First Violation
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
 
             </div>
 
         </div>
 
-    </form>
-
-
-    <!-- ============================= -->
-    <!-- Violation Table -->
-    <!-- ============================= -->
-
-    <div class="table-responsive">
-
-        <table class="table table-bordered table-striped align-middle">
-
-            <thead class="table-dark">
-
-                <tr>
-
-                    <th>
-                        ID
-                    </th>
-
-                    <th>
-                        Vehicle
-                    </th>
-
-                    <th>
-                        Violation
-                    </th>
-
-                    <th>
-                        Location
-                    </th>
-
-                    <th>
-                        Date
-                    </th>
-
-                    <th>
-                        Fine
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                    <th>
-                        QR Code
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                {% for v in violations %}
-
-                <tr>
-
-                    <!-- ID -->
-
-                    <td>
-                        {{ v.id }}
-                    </td>
-
-
-                    <!-- Vehicle -->
-
-                    <td>
-                        {{ v.vehicle_number }}
-                    </td>
-
-
-                    <!-- Violation -->
-
-                    <td>
-                        {{ v.violation_type }}
-                    </td>
-
-
-                    <!-- Location -->
-
-                    <td>
-                        {{ v.location }}
-                    </td>
-
-
-                    <!-- Date -->
-
-                    <td>
-                        {{ v.date }}
-                    </td>
-
-
-                    <!-- Fine -->
-
-                    <td>
-                        ₹{{ v.fine_amount }}
-                    </td>
-
-
-                    <!-- Status -->
-
-                    <td>
-
-                        {% if v.status == "Paid" %}
-
-                            <span class="badge bg-success">
-                                Paid
-                            </span>
-
-                        {% else %}
-
-                            <span class="badge bg-danger">
-                                Unpaid
-                            </span>
-
-                        {% endif %}
-
-                    </td>
-
-
-                    <!-- QR CODE -->
-
-                    <td>
-
-                        <img
-                            src="{{ url_for(
-                                'static',
-                                filename='qr_codes/violation_' ~ v.id ~ '.png'
-                            ) }}"
-                            alt="QR Code"
-                            width="80"
-                            height="80"
-                        >
-
-                    </td>
-
-                </tr>
-
-                {% else %}
-
-                <tr>
-
-                    <td
-                        colspan="8"
-                        class="text-center"
-                    >
-                        No violations found.
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
     </div>
 
 </div>
+
+
+<!-- ============================= -->
+<!-- DELETE CONFIRMATION -->
+<!-- ============================= -->
+
+<script>
+
+function confirmDelete() {
+
+    return confirm(
+        "⚠️ Are you sure you want to delete this violation?\n\n" +
+        "This action cannot be undone."
+    );
+
+}
+
+</script>
 
 {% endblock %}
